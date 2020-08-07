@@ -5,6 +5,8 @@ using System.Threading;
 using Newtonsoft.Json;
 using System.Text;
 using System.IO;
+using CryptoOrderApi.Infrastructure.Messages;
+using CryptoOrderApi.Domain.Repositories.Readers;
 
 namespace CryptoOrderApi.Infrastructure.QueueClients
 {
@@ -12,8 +14,11 @@ namespace CryptoOrderApi.Infrastructure.QueueClients
     {
         public IQueueClient QueueClient { get; }
 
-        public StopLimitQueueQueueClient(IQueueClient queueClient)
+        public IStopLimitReader StopLimitReader { get; }
+
+        public StopLimitQueueQueueClient(IQueueClient queueClient, IStopLimitReader stopLimitReader)
         {
+            StopLimitReader = stopLimitReader;
             QueueClient = queueClient;
         }
 
@@ -31,11 +36,13 @@ namespace CryptoOrderApi.Infrastructure.QueueClients
 
         async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
-           var newSalesOrder = JsonConvert.DeserializeObject<NewSalesOrder>(Encoding.UTF8.GetString(message.Body));
-           Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{newSalesOrder.UserId}");
-           Binance(newSalesOrder);
-           
-           await QueueClient.CompleteAsync(message.SystemProperties.LockToken);
+            var newSaleOrder = JsonConvert.DeserializeObject<NewStopLimitOrderSale>(Encoding.UTF8.GetString(message.Body));
+        
+            var stopLimit = await StopLimitReader.Get(newSaleOrder.StopLimitId);
+
+
+
+            await QueueClient.CompleteAsync(message.SystemProperties.LockToken);
         }
 
         Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)

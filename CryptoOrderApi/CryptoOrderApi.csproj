@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+    <ItemGroup>
+    <ProjectReference Include="..\CryptoOrderApi.Domain\CryptoOrderApi.Domain.csproj" />
+    <ProjectReference Include="..\CryptoOrderApi.Infrastructure\CryptoOrderApi.Infrastructure.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Binance.Net" Version="5.0.10" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.3" />

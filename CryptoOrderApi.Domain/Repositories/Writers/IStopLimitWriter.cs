@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using CryptoOrderApi.Domain.Entities;
 
-
-namespace ExchangeApi.Domain.Repositories
+namespace ExchangeApi.Domain.Repositories.Writers
 {
     public interface IStopLimitWriter
     {

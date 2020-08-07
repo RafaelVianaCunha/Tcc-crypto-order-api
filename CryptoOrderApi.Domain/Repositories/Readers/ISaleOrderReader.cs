@@ -5,12 +5,12 @@ using CryptoOrderApi.Domain.Entities;
 
 namespace CryptoOrderApi.Domain.Repositories.Readers
 {
-    public interface IStopLimitReader
+    public interface ISaleOrderReader
     {
-        Task<StopLimit> Get(Guid stopLimitId);
+        Task<SaleOrder> Get(Guid saleOrderId);
 
-        Task<IReadOnlyCollection<StopLimit>> Get();
+        Task<IReadOnlyCollection<SaleOrder>> Get();
 
-        Task<bool> Any(Guid stopLimitId);
+        Task<bool> Any(Guid saleOrderId);
     }
 }

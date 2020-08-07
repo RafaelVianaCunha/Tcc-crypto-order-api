@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CryptoOrderApi.Domain.Repositories;
+using CryptoOrderApi.Domain.Repositories.Readers;
 using CryptoOrderApi.Domain.Entities;
 using CryptoOrderApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;

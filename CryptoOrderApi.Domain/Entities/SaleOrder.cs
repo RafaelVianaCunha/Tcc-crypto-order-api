@@ -11,5 +11,13 @@ namespace CryptoOrderApi.Domain.Entities
         public Guid StopLimitId { get; set; }
 
         public StopLimit StopLimit { get; set; }
+
+        public DateTime DeletedAt { get; set; }
+
+         public SaleOrder Delete()
+        {
+            DeletedAt = DateTime.UtcNow;
+            return this;
+        }
     }
 }

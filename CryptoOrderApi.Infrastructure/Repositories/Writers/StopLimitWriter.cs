@@ -3,6 +3,7 @@ using ExchangeApi.Domain.Repositories;
 using CryptoOrderApi.Domain.Repositories;
 using CryptoOrderApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using ExchangeApi.Domain.Repositories.Writers;
 
 namespace CryptoOrderApi.Infrastructure.Repositories.Writers
 {
