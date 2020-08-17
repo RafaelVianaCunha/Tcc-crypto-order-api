@@ -18,16 +18,20 @@ namespace CryptoOrderApi.Domain.Services
 
         public ISaleOrderWriter SaleOrderWriter { get; }
 
+        public IExchangeCredentialsClient ExchangeCredentialsClient { get; }
+
         public SaleOrderProcessor(
             IStopLimitReader stopLimitReader,
             ISaleOrderQueueClient saleOrderQueueClient,
             IBinanceClient binanceClient,
-            ISaleOrderWriter saleOrderWriter)
+            ISaleOrderWriter saleOrderWriter,
+            IExchangeCredentialsClient exchangeCredentialsClient)
         {
             StopLimitReader = stopLimitReader;
             SaleOrderQueueClient = saleOrderQueueClient;
             BinanceClient = binanceClient;
             SaleOrderWriter = saleOrderWriter;
+            ExchangeCredentialsClient = exchangeCredentialsClient;
         }
 
         public async Task<SaleOrder> Sell(Guid stopLimitId)
@@ -45,7 +49,9 @@ namespace CryptoOrderApi.Domain.Services
                 StopLimitId = stopLimitId
             };
 
-            await BinanceClient.PlaceOrder(saleOrder);
+            var exchangeCredentials = await ExchangeCredentialsClient.Get(stopLimit.UserID);
+
+            BinanceClient.PlaceOrder(exchangeCredentials, saleOrder);
 
             await SaleOrderWriter.Create(saleOrder);
 
