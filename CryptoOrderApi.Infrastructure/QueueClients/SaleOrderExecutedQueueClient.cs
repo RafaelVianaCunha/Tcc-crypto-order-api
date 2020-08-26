@@ -7,11 +7,11 @@ using System.Text;
 
 namespace CryptoOrderApi.Infrastructure.QueueClients 
 {
-    public class SaleOrderQueueClient : ISaleOrderQueueClient
+    public class SaleOrderExecutedQueueClient : ISaleOrderExecutedQueueClient
     {
         public IQueueClient QueueClient { get; }
 
-        public SaleOrderQueueClient(IQueueClient queueClient)
+        public SaleOrderExecutedQueueClient(IQueueClient queueClient)
         {
             QueueClient = queueClient;
         }

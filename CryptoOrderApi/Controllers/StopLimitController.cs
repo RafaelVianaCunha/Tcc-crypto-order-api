@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using CryptoOrderApi.Domain.Entities;
 using CryptoOrderApi.Domain.Repositories.Readers;
+using CryptoOrderApi.Infrastructure.QueueClients;
 using ExchangeApi.Domain.Repositories;
 using ExchangeApi.Domain.Repositories.Writers;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,17 @@ namespace ExchangeApi.Controllers
 
         public IStopLimitReader StopLimitReader { get; }
 
+        public IStopLimitCreatedQueueClient StopLimitCreatedQueueClient { get; }
 
-        public StopLimitController(IStopLimitWriter stopLimitWriter,   IStopLimitReader stopLimitReader)
+        public IStopLimitDeletedQueueClient StopLimitDeletedQueueClient { get; }
+
+
+        public StopLimitController(IStopLimitWriter stopLimitWriter, IStopLimitReader stopLimitReader, IStopLimitCreatedQueueClient stopLimitCreatedQueueClient, IStopLimitDeletedQueueClient stopLimitDeletedQueueClient)
         {
-           StopLimitWriter = stopLimitWriter;
-           StopLimitReader = stopLimitReader;
-
+            StopLimitWriter = stopLimitWriter;
+            StopLimitReader = stopLimitReader;
+            StopLimitCreatedQueueClient = stopLimitCreatedQueueClient;
+            StopLimitDeletedQueueClient = stopLimitDeletedQueueClient;
         }
 
         [HttpPost]
@@ -28,6 +34,8 @@ namespace ExchangeApi.Controllers
         public async Task<IActionResult> Create([FromBody] StopLimit stopLimitModel)
         {
             var stopLimit = await StopLimitWriter.Create(stopLimitModel);
+
+            await StopLimitCreatedQueueClient.Queue(stopLimit);
 
             return Created(string.Empty, stopLimit);
         }
@@ -43,9 +51,11 @@ namespace ExchangeApi.Controllers
                 return NotFound();
             }
 
-            var stopLimitDelete = await StopLimitWriter.Delete(stopLimit);
+            var stopLimitDeleted = await StopLimitWriter.Delete(stopLimit);
 
-            return Ok(stopLimit);
+            await StopLimitDeletedQueueClient.Queue(stopLimitDeleted);
+
+            return Ok(stopLimitDeleted);
         }
 
 

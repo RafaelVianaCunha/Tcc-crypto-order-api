@@ -3,7 +3,7 @@ using CryptoOrderApi.Domain.Entities;
 
 namespace CryptoOrderApi.Domain.Clients
 {
-    public interface ISaleOrderQueueClient
+    public interface ISaleOrderExecutedQueueClient
     {
         Task Queue(SaleOrder saleOrder);
     }

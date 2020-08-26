@@ -4,25 +4,28 @@ using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Text;
-using System.IO;
 using CryptoOrderApi.Infrastructure.Messages;
 using CryptoOrderApi.Domain.Repositories.Readers;
+using CryptoOrderApi.Domain.Services;
 
 namespace CryptoOrderApi.Infrastructure.QueueClients
 {
-    public class StopLimitQueueQueueClient
+    public class NewStopLimitOrderSaleQueueClient : INewStopLimitOrderSaleQueueClient
     {
         public IQueueClient QueueClient { get; }
 
         public IStopLimitReader StopLimitReader { get; }
 
-        public StopLimitQueueQueueClient(IQueueClient queueClient, IStopLimitReader stopLimitReader)
+        public ISaleOrderProcessor SaleOrderProcessor { get; }
+
+        public NewStopLimitOrderSaleQueueClient(IQueueClient queueClient, IStopLimitReader stopLimitReader, ISaleOrderProcessor saleOrderProcessor)
         {
             StopLimitReader = stopLimitReader;
             QueueClient = queueClient;
+            SaleOrderProcessor = saleOrderProcessor;
         }
 
-        public void ConsumeNewStopLimitOrderSale()
+        public void Consume()
         {
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
             {
@@ -38,9 +41,7 @@ namespace CryptoOrderApi.Infrastructure.QueueClients
         {
             var newSaleOrder = JsonConvert.DeserializeObject<NewStopLimitOrderSale>(Encoding.UTF8.GetString(message.Body));
         
-            var stopLimit = await StopLimitReader.Get(newSaleOrder.StopLimitId);
-
-
+            await SaleOrderProcessor.Sell(newSaleOrder.StopLimitId);
 
             await QueueClient.CompleteAsync(message.SystemProperties.LockToken);
         }

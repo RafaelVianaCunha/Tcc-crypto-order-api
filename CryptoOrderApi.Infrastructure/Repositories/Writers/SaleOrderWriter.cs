@@ -1,6 +1,4 @@
 using System.Threading.Tasks;
-using ExchangeApi.Domain.Repositories;
-using CryptoOrderApi.Domain.Repositories;
 using CryptoOrderApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using ExchangeApi.Domain.Repositories.Writers;
@@ -9,12 +7,12 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Writers
 {
     public class SaleOrderWriter : ISaleOrderWriter
     {
-        public SaleOrderDbContext SaleOrderDbContext { get; }
+        public StopLimitDbContext StopLimitDbContext { get; }
 
         public async Task<SaleOrder> Create(SaleOrder saleOrder)
         {
-            await SaleOrderDbContext.SaleOrder.AddAsync(saleOrder);
-            await SaleOrderDbContext.SaveChangesAsync();
+            await StopLimitDbContext.SaleOrders.AddAsync(saleOrder);
+            await StopLimitDbContext.SaveChangesAsync();
 
             return saleOrder;
         }
@@ -26,10 +24,10 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Writers
 
         public async Task<SaleOrder> Update(SaleOrder saleOrder)
         {
-            SaleOrderDbContext.SaleOrder.Attach(saleOrder);
-            SaleOrderDbContext.Entry(saleOrder).State = EntityState.Modified;
+            StopLimitDbContext.SaleOrders.Attach(saleOrder);
+            StopLimitDbContext.Entry(saleOrder).State = EntityState.Modified;
 
-            await SaleOrderDbContext.SaveChangesAsync();
+            await StopLimitDbContext.SaveChangesAsync();
 
             return saleOrder;
         }

@@ -8,11 +8,11 @@ using ExchangeApi.Domain.Repositories.Writers;
 
 namespace CryptoOrderApi.Domain.Services
 {
-    public class SaleOrderProcessor
+    public class SaleOrderProcessor : ISaleOrderProcessor
     {
         public IStopLimitReader StopLimitReader { get; }
 
-        public ISaleOrderQueueClient SaleOrderQueueClient { get; }
+        public ISaleOrderExecutedQueueClient SaleOrderExecutedQueueClient { get; }
 
         public IBinanceClient BinanceClient { get; }
 
@@ -22,13 +22,13 @@ namespace CryptoOrderApi.Domain.Services
 
         public SaleOrderProcessor(
             IStopLimitReader stopLimitReader,
-            ISaleOrderQueueClient saleOrderQueueClient,
+            ISaleOrderExecutedQueueClient saleOrderExecutedQueueClient,
             IBinanceClient binanceClient,
             ISaleOrderWriter saleOrderWriter,
             IExchangeCredentialsClient exchangeCredentialsClient)
         {
             StopLimitReader = stopLimitReader;
-            SaleOrderQueueClient = saleOrderQueueClient;
+            SaleOrderExecutedQueueClient = saleOrderExecutedQueueClient;
             BinanceClient = binanceClient;
             SaleOrderWriter = saleOrderWriter;
             ExchangeCredentialsClient = exchangeCredentialsClient;
@@ -55,7 +55,7 @@ namespace CryptoOrderApi.Domain.Services
 
             await SaleOrderWriter.Create(saleOrder);
 
-            await SaleOrderQueueClient.Queue(saleOrder);
+            await SaleOrderExecutedQueueClient.Queue(saleOrder);
 
             return saleOrder;
         }

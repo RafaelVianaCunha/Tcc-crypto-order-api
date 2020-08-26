@@ -20,32 +20,6 @@ namespace ExchangeApi.Controllers
         {
            SaleOrderWriter = saleOrderWriter;
            SaleOrderReader = saleOrderReader;
-
-        }
-
-        [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> Create([FromBody] SaleOrder saleOrderModel)
-        {
-            var saleOrder = await SaleOrderWriter.Create(saleOrderModel);
-
-            return Created(string.Empty, saleOrder);
-        }
-
-        [HttpDelete]
-        [Route("{saleOrderId}")]
-        public async Task<IActionResult> Delete(Guid saleOrderId)
-        {
-            var saleOrder = await SaleOrderReader.Get(saleOrderId);
-
-            if (saleOrder == null) 
-            {
-                return NotFound();
-            }
-
-            var saleOrderDelete = await SaleOrderWriter.Delete(saleOrder);
-
-            return Ok(saleOrderDelete);
         }
 
 

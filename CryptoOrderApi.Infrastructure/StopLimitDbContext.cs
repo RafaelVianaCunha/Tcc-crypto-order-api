@@ -8,7 +8,7 @@ namespace CryptoOrderApi.Infrastructure
     {
         public DbSet<StopLimit> StopLimits { get; set; }
 
-        public DbSet<SaleOrder> SaleOrder { get; set; }
+        public DbSet<SaleOrder> SaleOrders { get; set; }
 
         protected StopLimitDbContext(){
             

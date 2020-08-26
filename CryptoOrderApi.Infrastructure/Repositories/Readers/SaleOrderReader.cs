@@ -11,23 +11,28 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Readers
 {
     public class SaleOrderReader : ISaleOrderReader
     {
-        public SaleOrderDbContext SaleOrderDbContext { get; }
+        public StopLimitDbContext StopLimitDbContext { get; }
+
+        public SaleOrderReader(StopLimitDbContext stopLimitDbContext)
+        {
+            StopLimitDbContext = stopLimitDbContext;
+        }
 
         public Task<bool> Any(Guid saleOrderId)
         {
-            return SaleOrderDbContext.SaleOrder.AnyAsync(x => x.Id == saleOrderId);
+            return StopLimitDbContext.SaleOrders.AnyAsync(x => x.Id == saleOrderId);
 
         }
 
         public Task<SaleOrder> Get(Guid saleOrderId)
         {
-            return SaleOrderDbContext.SaleOrder.SingleOrDefaultAsync(x => x.Id == saleOrderId);
+            return StopLimitDbContext.SaleOrders.SingleOrDefaultAsync(x => x.Id == saleOrderId);
 
         }
 
         public async Task<IReadOnlyCollection<SaleOrder>> Get()
         {
-          return await SaleOrderDbContext.SaleOrder.Where(x => x.DeletedAt != null).ToListAsync();
+          return await StopLimitDbContext.SaleOrders.Where(x => x.DeletedAt == null).ToListAsync();
         }
     }
 }
