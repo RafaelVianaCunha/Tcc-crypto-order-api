@@ -13,9 +13,9 @@ namespace CryptoOrderApi.Infrastructure.Clients
     {
         public HttpClient HttpClient { get; } 
 
-        public ExchangeCredentialsClient(HttpClient httpClient)
+        public ExchangeCredentialsClient()
         {
-            HttpClient = httpClient;
+            HttpClient = new HttpClient();
         }
             
         public async Task<ExchangeCredentials> Get(Guid userId)

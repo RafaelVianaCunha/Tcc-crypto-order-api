@@ -13,7 +13,7 @@ using CryptoOrderApi.Domain.ValueObjects;
 
 namespace CryptoOrderApi.Infrastructure.Clients
 {
-    public class BinenceCliente : IBinanceClient
+    public class BinenceClient : IBinanceClient
     {
         private const String SYMBOL = "BTCUSD";
         public void PlaceOrder(ExchangeCredentials exchangeCredentials, SaleOrder saleOrder)

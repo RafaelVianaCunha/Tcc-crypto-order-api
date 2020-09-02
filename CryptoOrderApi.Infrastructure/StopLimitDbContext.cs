@@ -10,11 +10,11 @@ namespace CryptoOrderApi.Infrastructure
 
         public DbSet<SaleOrder> SaleOrders { get; set; }
 
-        protected StopLimitDbContext(){
+        public StopLimitDbContext(){
             
         }
 
-        protected StopLimitDbContext(DbContextOptions options) : base(options)
+        public StopLimitDbContext(DbContextOptions options) : base(options)
         {/*  */
         }
 
