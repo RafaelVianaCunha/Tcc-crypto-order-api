@@ -13,14 +13,18 @@ namespace CryptoOrderApi.Infrastructure.Clients
     {
         public HttpClient HttpClient { get; } 
 
-        public ExchangeCredentialsClient(HttpClient httpClient)
+        public string ExchangeApiUrl { get; }
+
+        public ExchangeCredentialsClient(
+            HttpClient httpClient, string exchangeApiUrl)
         {
             HttpClient = httpClient;
+            ExchangeApiUrl = exchangeApiUrl;
         }
-            
+
         public async Task<ExchangeCredentials> Get(Guid userId)
         {
-            var httpResponse = await HttpClient.GetAsync($"/api/exchanges/users/{userId}/credentials");
+            var httpResponse = await HttpClient.GetAsync($"{ExchangeApiUrl}/api/exchanges/users/{userId}/credentials");
 
             if (!httpResponse.IsSuccessStatusCode)
             {
