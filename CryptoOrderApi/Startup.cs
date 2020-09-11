@@ -71,7 +71,11 @@ namespace CryptoOrderApi
             var stopLimitDeletedQueueClient = new QueueClient(serviceBusConnectionString, stopLimitDeletedQueueName);
 
             container.Register<Domain.Clients.IBinanceClient, BinenceClient>();
-            container.Register<IExchangeCredentialsClient, ExchangeCredentialsClient>();
+            container.Register<IExchangeCredentialsClient>(() => {
+                var exchangeUrlApi = Configuration.GetSection("ExchangeApiUrl").Value;
+
+                return new ExchangeCredentialsClient(new System.Net.Http.HttpClient(), exchangeUrlApi);
+            });
 
             container.Register<ISaleOrderProcessor, SaleOrderProcessor>();
 
@@ -118,8 +122,6 @@ namespace CryptoOrderApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

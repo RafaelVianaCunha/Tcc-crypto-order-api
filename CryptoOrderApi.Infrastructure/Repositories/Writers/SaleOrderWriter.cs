@@ -9,6 +9,11 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Writers
     {
         public StopLimitDbContext StopLimitDbContext { get; }
 
+        public SaleOrderWriter(StopLimitDbContext stopLimitDbContext)
+        {
+            StopLimitDbContext = stopLimitDbContext;
+        }
+
         public async Task<SaleOrder> Create(SaleOrder saleOrder)
         {
             await StopLimitDbContext.SaleOrders.AddAsync(saleOrder);

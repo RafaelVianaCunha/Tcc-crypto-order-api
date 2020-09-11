@@ -10,9 +10,15 @@ namespace CryptoOrderApi.Domain.Entities
         public Decimal Limit { get; set; }
         public int Quantity { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public SaleOrder SaleOrder { get; set; }
+
+        public StopLimit()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.UtcNow;
+        }
 
         public StopLimit Delete()
         {

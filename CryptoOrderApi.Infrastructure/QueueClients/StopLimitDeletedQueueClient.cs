@@ -27,7 +27,7 @@ namespace CryptoOrderApi.Infrastructure.QueueClients
                 Limit = stopLimit.Limit,
                 Quantity = stopLimit.Quantity,
                 CreatedAt = stopLimit.CreatedAt,
-                DeletedAt = stopLimit.DeletedAt
+                DeletedAt = stopLimit.DeletedAt.Value
             };
 
             var messageBody = JsonConvert.SerializeObject(stopLimit);

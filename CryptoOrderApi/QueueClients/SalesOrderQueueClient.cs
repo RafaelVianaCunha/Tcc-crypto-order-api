@@ -31,6 +31,7 @@ namespace CryptoOrderApi.QueueClients
             Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
 
             // Binance API para vender
+            Console.WriteLine("vamos vender");
             
             await QueueClient.CompleteAsync(message.SystemProperties.LockToken);
         }

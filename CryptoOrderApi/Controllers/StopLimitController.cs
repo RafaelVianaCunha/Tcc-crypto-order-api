@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExchangeApi.Controllers
 {
-    [Route("/api/exchanges")]
+    [Route("/api/stop-limits")]
     public class StopLimitController : Controller
     {
         public IStopLimitWriter StopLimitWriter { get; }
