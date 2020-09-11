@@ -13,6 +13,7 @@ namespace CryptoOrderApi.Infrastructure.Clients
     {
         public HttpClient HttpClient { get; } 
 
+<<<<<<< HEAD
         public string ExchangeApiUrl { get; }
 
         public ExchangeCredentialsClient(
@@ -20,6 +21,11 @@ namespace CryptoOrderApi.Infrastructure.Clients
         {
             HttpClient = httpClient;
             ExchangeApiUrl = exchangeApiUrl;
+=======
+        public ExchangeCredentialsClient()
+        {
+            HttpClient = new HttpClient();
+>>>>>>> c4f1886379e18e13b46a7cbfd3f0aa74f52da4ca
         }
 
         public async Task<ExchangeCredentials> Get(Guid userId)

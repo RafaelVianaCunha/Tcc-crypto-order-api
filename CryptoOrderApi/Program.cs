@@ -26,24 +26,8 @@ namespace CryptoOrderApi
         
         public static void Main(string[] args)
         {
-            GetAppSettingsFile();
-            var serviceBusConnectionString = Configuration.GetSection("ServiceBusConnectionString").Value;
-            
-            var newStopLimitOrderSaleQueueName = Configuration.GetSection("NewStopLimitOrderSaleQueue").Value;
-            var newStopLimitOrderSaleQueueClient = new QueueClient(serviceBusConnectionString, newStopLimitOrderSaleQueueName);
-
-            var saleOrderExecutedQueueName = Configuration.GetSection("SaleOrderExecutedQueue").Value;
-            var saleOrderExecutedQueueClient = new QueueClient(serviceBusConnectionString, saleOrderExecutedQueueName);
-
-            var stopLimitCreatedQueueName = Configuration.GetSection("StopLimitCreatedQueue").Value;
-            var stopLimitCreatedQueueClient = new QueueClient(serviceBusConnectionString, stopLimitCreatedQueueName);
-
-            var stopLimitDeletedQueueName = Configuration.GetSection("StopLimitDeletedQueue").Value;
-            var stopLimitDeletedQueueClient = new QueueClient(serviceBusConnectionString, stopLimitDeletedQueueName);
-
-            
+            CreateHostBuilder(args).Build().Run();
         }
-
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
