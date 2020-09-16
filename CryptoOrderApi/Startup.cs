@@ -88,10 +88,20 @@ namespace CryptoOrderApi
                 return new StopLimitDbContext(optionsBuilder.Options);
             }, Lifestyle.Scoped);
                 
-            container.Register<IStopLimitReader, StopLimitReader>();
+            container.Register<IStopLimitReader>(() => {
+                var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
+
+                return new StopLimitReader(connectionString);
+            }, Lifestyle.Singleton);
+
             container.Register<ISaleOrderReader, SaleOrderReader>();
 
-            container.Register<IStopLimitWriter, StopLimitWriter>();
+            container.Register<IStopLimitWriter>((() => {
+                var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
+
+                return new StopLimitWriter(connectionString);
+            }, Lifestyle.Singleton);
+            
             container.Register<ISaleOrderWriter, SaleOrderWriter>();
             
             container.Register<INewStopLimitOrderSaleQueueClient>(() => {
