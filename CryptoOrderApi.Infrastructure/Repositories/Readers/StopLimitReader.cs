@@ -13,11 +13,14 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Readers
     {
         public StopLimitDbContext StopLimitDbContext { get; }
 
-        public StopLimitReader(StopLimitDbContext stopLimitDbContext)
+        public StopLimitReader(string connectionString)
         {
-            StopLimitDbContext = stopLimitDbContext;
+            var optionsBuilder = new DbContextOptionsBuilder<StopLimitDbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            StopLimitDbContext = new StopLimitDbContext(optionsBuilder.Options);
         }
-        
+
         public Task<bool> Any(Guid stopLimitId)
         {
             return StopLimitDbContext.StopLimits.AnyAsync(x => x.Id == stopLimitId);
@@ -30,7 +33,7 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Readers
 
         public async Task<IReadOnlyCollection<StopLimit>> Get()
         {
-          return await StopLimitDbContext.StopLimits.Where(x => x.DeletedAt == null).ToListAsync();
+            return await StopLimitDbContext.StopLimits.Where(x => x.DeletedAt == null).ToListAsync();
         }
     }
 }

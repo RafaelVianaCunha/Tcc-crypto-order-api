@@ -44,7 +44,8 @@ namespace CryptoOrderApi
         {
             services.AddControllers();
 
-            services.AddSimpleInjector(container, options => {
+            services.AddSimpleInjector(container, options =>
+            {
                 options
                     .AddAspNetCore()
                     .AddControllerActivation()
@@ -57,7 +58,7 @@ namespace CryptoOrderApi
         private void InitializeContainer()
         {
             var serviceBusConnectionString = Configuration.GetSection("ServiceBusConnectionString").Value;
-            
+
             var newStopLimitOrderSaleQueueName = Configuration.GetSection("NewStopLimitOrderSaleQueue").Value;
             var newStopLimitOrderSaleQueueClient = new QueueClient(serviceBusConnectionString, newStopLimitOrderSaleQueueName);
 
@@ -71,7 +72,8 @@ namespace CryptoOrderApi
             var stopLimitDeletedQueueClient = new QueueClient(serviceBusConnectionString, stopLimitDeletedQueueName);
 
             container.Register<Domain.Clients.IBinanceClient, BinenceClient>();
-            container.Register<IExchangeCredentialsClient>(() => {
+            container.Register<IExchangeCredentialsClient>(() =>
+            {
                 var exchangeUrlApi = Configuration.GetSection("ExchangeApiUrl").Value;
 
                 return new ExchangeCredentialsClient(new System.Net.Http.HttpClient(), exchangeUrlApi);
@@ -79,16 +81,18 @@ namespace CryptoOrderApi
 
             container.Register<ISaleOrderProcessor, SaleOrderProcessor>();
 
-            container.Register<StopLimitDbContext>(() => {
+            container.Register<StopLimitDbContext>(() =>
+            {
                 var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
-            
+
                 var optionsBuilder = new DbContextOptionsBuilder<StopLimitDbContext>();
                 optionsBuilder.UseSqlServer(connectionString);
 
                 return new StopLimitDbContext(optionsBuilder.Options);
             }, Lifestyle.Scoped);
-                
-            container.Register<IStopLimitReader>(() => {
+
+            container.Register<IStopLimitReader>(() =>
+            {
                 var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
 
                 return new StopLimitReader(connectionString);
@@ -96,29 +100,39 @@ namespace CryptoOrderApi
 
             container.Register<ISaleOrderReader, SaleOrderReader>();
 
-            container.Register<IStopLimitWriter>((() => {
+            container.Register<IStopLimitWriter>(() =>
+            {
                 var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
 
                 return new StopLimitWriter(connectionString);
             }, Lifestyle.Singleton);
-            
-            container.Register<ISaleOrderWriter, SaleOrderWriter>();
-            
-            container.Register<INewStopLimitOrderSaleQueueClient>(() => {
+
+            container.Register<ISaleOrderWriter>(() =>
+            {
+                var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
+
+                return new SaleOrderWriter(connectionString);
+            }, Lifestyle.Singleton);
+
+            container.Register<INewStopLimitOrderSaleQueueClient>(() =>
+            {
                 var stopLimitReader = container.GetInstance<IStopLimitReader>();
                 var saleOrderProcessor = container.GetInstance<ISaleOrderProcessor>();
                 return new NewStopLimitOrderSaleQueueClient(newStopLimitOrderSaleQueueClient, stopLimitReader, saleOrderProcessor);
             }, Lifestyle.Singleton);
 
-            container.Register<ISaleOrderExecutedQueueClient>(() => {
+            container.Register<ISaleOrderExecutedQueueClient>(() =>
+            {
                 return new SaleOrderExecutedQueueClient(saleOrderExecutedQueueClient);
             });
 
-            container.Register<IStopLimitCreatedQueueClient>(() => {
+            container.Register<IStopLimitCreatedQueueClient>(() =>
+            {
                 return new StopLimitCreatedQueueClient(stopLimitCreatedQueueClient);
             });
 
-            container.Register<IStopLimitDeletedQueueClient>(() => {
+            container.Register<IStopLimitDeletedQueueClient>(() =>
+            {
                 return new StopLimitDeletedQueueClient(stopLimitDeletedQueueClient);
             });
         }
@@ -143,7 +157,7 @@ namespace CryptoOrderApi
             });
 
             container.Verify();
-            
+
             InitializeQueues();
         }
 
