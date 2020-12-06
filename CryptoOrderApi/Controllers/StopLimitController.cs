@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CryptoOrderApi.Domain.Entities;
 using CryptoOrderApi.Domain.Repositories.Readers;
@@ -56,6 +57,27 @@ namespace ExchangeApi.Controllers
             await StopLimitDeletedQueueClient.Queue(stopLimitDeleted);
 
             return Ok(stopLimitDeleted);
+        }
+
+        [HttpDelete]
+        
+        public async Task<IActionResult> Delete()
+        {
+            var stopLimits = await StopLimitReader.Get();
+           
+            if (stopLimits == null || stopLimits.Count == 0) 
+            {
+                return NotFound();
+            }
+
+            var stopLimitDeleteds = new List<StopLimit>();
+            foreach(var s in stopLimits){
+                var stopLimitDeleted = await StopLimitWriter.Delete(s);
+                stopLimitDeleteds.Add(stopLimitDeleted);
+                await StopLimitDeletedQueueClient.Queue(stopLimitDeleted);
+            }
+
+             return Ok(stopLimitDeleteds);
         }
 
 

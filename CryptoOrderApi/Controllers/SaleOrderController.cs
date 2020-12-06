@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExchangeApi.Controllers
 {
-    [Route("/api/exchanges")]
+    [Route("/api/saleorder")]
     public class SaleOrderController : Controller
     {
         public ISaleOrderWriter SaleOrderWriter { get; }

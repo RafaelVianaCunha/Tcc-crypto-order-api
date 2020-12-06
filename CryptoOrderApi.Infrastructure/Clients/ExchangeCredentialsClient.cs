@@ -24,7 +24,7 @@ namespace CryptoOrderApi.Infrastructure.Clients
 
         public async Task<ExchangeCredentials> Get(Guid userId)
         {
-            var httpResponse = await HttpClient.GetAsync($"{ExchangeApiUrl}/api/exchanges/users/{userId}/credentials");
+            var httpResponse = await HttpClient.GetAsync($"{ExchangeApiUrl}/api/exchange-credentials/users/{userId}/credentials");
 
             if (!httpResponse.IsSuccessStatusCode)
             {

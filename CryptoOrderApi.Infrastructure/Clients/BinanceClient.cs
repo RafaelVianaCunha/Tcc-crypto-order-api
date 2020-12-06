@@ -26,7 +26,8 @@ namespace CryptoOrderApi.Infrastructure.Clients
             });
 
             using (var client = new BinanceClient())
-            {
+            {   
+                Console.WriteLine("Ordem de Stop Executada");
                 var accountInfo = client.GetAccountInfo();
                 var orderResult = client.PlaceOrder(SYMBOL, OrderSide.Sell, OrderType.StopLossLimit, 
                                                     saleOrder.StopLimit.Quantity, 
