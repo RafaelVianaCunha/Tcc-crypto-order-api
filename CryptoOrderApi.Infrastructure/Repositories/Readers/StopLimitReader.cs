@@ -28,7 +28,7 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Readers
 
         public Task<StopLimit> Get(Guid stopLimitId)
         {
-            return StopLimitDbContext.StopLimits.SingleOrDefaultAsync(x => x.Id == stopLimitId);
+            return StopLimitDbContext.StopLimits.FirstOrDefaultAsync(x => x.Id == stopLimitId);
         }
 
         public async Task<IReadOnlyCollection<StopLimit>> Get()

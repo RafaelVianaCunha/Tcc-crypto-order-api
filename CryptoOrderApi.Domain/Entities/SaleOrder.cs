@@ -12,7 +12,7 @@ namespace CryptoOrderApi.Domain.Entities
 
         public StopLimit StopLimit { get; set; }
 
-        public DateTime DeletedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
          public SaleOrder Delete()
         {

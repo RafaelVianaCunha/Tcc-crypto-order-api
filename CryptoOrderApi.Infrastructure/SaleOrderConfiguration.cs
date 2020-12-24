@@ -8,7 +8,7 @@ namespace CryptoOrderApi.Infrastructure
     {
      public void Configure(EntityTypeBuilder<SaleOrder> builder)
         {
-            builder.ToTable("SaleOrders");
+            builder.ToTable("SaleOrder");
             
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ExecutedAt);

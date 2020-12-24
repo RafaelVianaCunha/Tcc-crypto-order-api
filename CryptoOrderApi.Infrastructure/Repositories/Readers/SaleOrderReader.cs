@@ -20,19 +20,19 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Readers
 
         public Task<bool> Any(Guid saleOrderId)
         {
-            return StopLimitDbContext.SaleOrders.AnyAsync(x => x.Id == saleOrderId);
+            return StopLimitDbContext.SaleOrder.AnyAsync(x => x.Id == saleOrderId);
 
         }
 
         public Task<SaleOrder> Get(Guid saleOrderId)
         {
-            return StopLimitDbContext.SaleOrders.SingleOrDefaultAsync(x => x.Id == saleOrderId);
+            return StopLimitDbContext.SaleOrder.SingleOrDefaultAsync(x => x.Id == saleOrderId);
 
         }
 
         public async Task<IReadOnlyCollection<SaleOrder>> Get()
         {
-          return await StopLimitDbContext.SaleOrders.Where(x => x.DeletedAt == null).ToListAsync();
+          return await StopLimitDbContext.SaleOrder.Where(x => x.DeletedAt == null).ToListAsync();
         }
     }
 }

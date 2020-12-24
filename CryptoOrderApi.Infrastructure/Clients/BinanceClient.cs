@@ -25,14 +25,14 @@ namespace CryptoOrderApi.Infrastructure.Clients
                 LogWriters = new List<TextWriter> { Console.Out }
             });
 
-            using (var client = new BinanceClient())
-            {   
-                Console.WriteLine("Ordem de Stop Executada");
-                var accountInfo = client.GetAccountInfo();
-                var orderResult = client.PlaceOrder(SYMBOL, OrderSide.Sell, OrderType.StopLossLimit, 
-                                                    saleOrder.StopLimit.Quantity, 
-                                                    price:  saleOrder.StopLimit.Limit, stopPrice : saleOrder.StopLimit.Stop);
-            }
+            // using (var client = new BinanceClient())
+            // {   
+            //     Console.WriteLine("Ordem de Stop Executada");
+            //     var accountInfo = client.GetAccountInfo();
+            //     var orderResult = client.PlaceOrder(SYMBOL, OrderSide.Sell, OrderType.StopLossLimit, 
+            //                                         saleOrder.StopLimit.Quantity, 
+            //                                         price:  saleOrder.StopLimit.Limit, stopPrice : saleOrder.StopLimit.Stop);
+            // }
         }
     }
 }

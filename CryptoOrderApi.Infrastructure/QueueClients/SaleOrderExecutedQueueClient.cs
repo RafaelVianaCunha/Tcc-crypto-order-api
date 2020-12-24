@@ -18,7 +18,12 @@ namespace CryptoOrderApi.Infrastructure.QueueClients
 
         public async Task Queue(SaleOrder saleOrder)
         {
-            var messageBody = JsonConvert.SerializeObject(saleOrder);
+            var messageBody =  JsonConvert.SerializeObject(saleOrder, Formatting.Indented, 
+            new JsonSerializerSettings 
+            { 
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            });
+
             var message = new Message(Encoding.UTF8.GetBytes(messageBody));
             
             await QueueClient.SendAsync(message);

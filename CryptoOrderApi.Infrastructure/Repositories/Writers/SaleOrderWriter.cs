@@ -19,7 +19,7 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Writers
 
         public async Task<SaleOrder> Create(SaleOrder saleOrder)
         {
-            await StopLimitDbContext.SaleOrders.AddAsync(saleOrder);
+            await StopLimitDbContext.SaleOrder.AddAsync(saleOrder);
             await StopLimitDbContext.SaveChangesAsync();
 
             return saleOrder;
@@ -32,7 +32,7 @@ namespace CryptoOrderApi.Infrastructure.Repositories.Writers
 
         public async Task<SaleOrder> Update(SaleOrder saleOrder)
         {
-            StopLimitDbContext.SaleOrders.Attach(saleOrder);
+            StopLimitDbContext.SaleOrder.Attach(saleOrder);
             StopLimitDbContext.Entry(saleOrder).State = EntityState.Modified;
 
             await StopLimitDbContext.SaveChangesAsync();

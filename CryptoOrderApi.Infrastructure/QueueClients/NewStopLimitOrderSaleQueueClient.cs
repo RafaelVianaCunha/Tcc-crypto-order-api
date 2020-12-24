@@ -40,7 +40,7 @@ namespace CryptoOrderApi.Infrastructure.QueueClients
         async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
             var newSaleOrder = JsonConvert.DeserializeObject<NewStopLimitOrderSale>(Encoding.UTF8.GetString(message.Body));
-            Console.WriteLine("Vamos vender");
+            Console.WriteLine("ProcessMessagesAsync Vamos vender");
         
             await SaleOrderProcessor.Sell(newSaleOrder.StopLimitId);
 
