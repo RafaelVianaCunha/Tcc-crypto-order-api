@@ -15,7 +15,7 @@ namespace CryptoOrderApi.Infrastructure.Clients
 {
     public class BinenceClient : IBinanceClient
     {
-        private const String SYMBOL = "BTCUSD";
+        private const String SYMBOL = "BTCUSDT";
         public void PlaceOrder(ExchangeCredentials exchangeCredentials, SaleOrder saleOrder)
         {
               BinanceClient.SetDefaultOptions(new BinanceClientOptions()
@@ -25,14 +25,13 @@ namespace CryptoOrderApi.Infrastructure.Clients
                 LogWriters = new List<TextWriter> { Console.Out }
             });
 
-            // using (var client = new BinanceClient())
-            // {   
-            //     Console.WriteLine("Ordem de Stop Executada");
-            //     var accountInfo = client.GetAccountInfo();
-            //     var orderResult = client.PlaceOrder(SYMBOL, OrderSide.Sell, OrderType.StopLossLimit, 
-            //                                         saleOrder.StopLimit.Quantity, 
-            //                                         price:  saleOrder.StopLimit.Limit, stopPrice : saleOrder.StopLimit.Stop);
-            // }
+            using (var client = new BinanceClient())
+            {   
+                Console.WriteLine("Ordem de Stop Executada");
+                //var accountInfo = client.GetAccountInfo();
+                var orderResult = client.PlaceOrder(SYMBOL, OrderSide.Sell, OrderType.Market, 
+                                                    saleOrder.StopLimit.Quantity) ;
+            }
         }
     }
 }
